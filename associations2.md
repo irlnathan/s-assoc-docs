@@ -23,11 +23,9 @@ README.md
 ```
 
 #What are models?
-The term model is one of those over-loaded words that can cause a bunch of confusion.  Therefore, I want to provide some context for how I'm using the term model in this dicussion.  For my purposes a model is a group of attributes that describes a thing.  For example, a `user model` can consist of a single attribute:
+The term model is one of those over-loaded words that can cause a bunch of confusion.  Therefore, I want to provide some context for how I'm using the term model in this dicussion.  For my purposes a model is a group of attributes that describes a thing.  For example, a user `model` can consist of a single attribute:  **name**
 
-- name
-
-I'm going to represent this `user` model in sails as a `model` object:
+I'm going to represent this **user** `model` in sails as a `model` object:
 
 ```javascript
 attributes: {
