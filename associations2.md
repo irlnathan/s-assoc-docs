@@ -3,7 +3,7 @@ Create a sails project using:
 
 `sails new sailsPeople`
 
-This create a project with the following general folder structure:
+Sails creates the project with the following folder structure:
 
 ```javascript
 sailsPeople
@@ -22,10 +22,12 @@ README.md
                 
 ```
 
-#What are models?
-The term model is one of those over-loaded words that can cause a bunch of confusion.  Therefore, I want to provide some context for how I'm using the term model in this dicussion.  For my purposes a model is a group of attributes that describes a thing.  For example, a user `model` can consist of a single attribute:  **name**
+Now that the project is created I'll move on to models.
 
-I'm going to represent this **user** `model` in sails as a `model` object:
+#What are models?
+The term model is one of those over-loaded words that can cause a bunch of confusion.  Therefore, I want to provide some context for how I'm using the term `model` in this dicussion.  For my purposes a `model` is a group of attributes that describes some thing.  For example, I want to create a user `model` that consists of a single attribute:  **name**.
+
+In sails, I can create a **user** `model` as a javascript object:
 
 ```javascript
 attributes: {
@@ -33,9 +35,11 @@ attributes: {
 		type: 'string'	}}
 ```
 
-**Note:** I can generate an initial model from the command-line using `sails generate api user`.  This will create a file in the `api/models` folder under `user.js`.
+The model is contained in a file named `User.js` and resides in `\sailsPeople\api\models\`. When sails starts using `sails lift`, sails uses the model as a template to describe users, but I'm getting ahead of myself.
 
-I'm also going to do something similiar with my second model called `lead`.  A lead within my app, is a person/entity that I want to sell my product or service.  From the command line I'll enter:
+ **Note:** I can generate an initial model from the command-line using `sails generate api user`.  This will create a file in the `sailsPeople/api/models` folder under `User.js`.
+
+I'm also going to do something similiar with my second `model` called **lead**.  A lead within my app, is a person or entity that I'm intersting in selling a product or service.  From the command line I'll enter:
 
  `sails generate api lead` 
  
@@ -49,7 +53,7 @@ sailsPeople
                  |_Lead.js
 ```
 
-Similar to the `user` model, I'm adding the attribute name to my `lead` model:
+Similar to the user `model`, I'm adding the attribute `name` to my lead `model`:
 
 ```javascript
 attributes: {
