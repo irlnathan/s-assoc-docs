@@ -27,10 +27,14 @@ Now that the project is created I'll move on to models.
 #What are models?
 The term model is one of those over-loaded words that can cause a bunch of confusion.  Therefore, I want to provide some context for how I'm using the term `model` in this discussion.  For my purposes a `model` is a group of attributes that describes some thing.  For example, I want to create a User `model` that consists of a single attribute:  **name**. 
 
-|User model ||
-| name|
-|:--:     |
-||
+<table>
+<tr>
+  <th align="center">User model</th>
+</tr>
+<tr>
+  <td align="center">name</td>
+</tr>
+</table>
 
 In sails, I can create a **User** `model` as a javascript object:
 
@@ -58,10 +62,14 @@ sailsPeople
                  |_Lead.js
 ```
 
-|User model ||
-| name|
-|:--:     |
-||
+<table>
+<tr>
+  <th align="center">User model</th>
+</tr>
+<tr>
+  <td align="center">name</td>
+</tr>
+</table>
 
 ```javascript
 attributes: {
@@ -69,10 +77,14 @@ attributes: {
 		type: 'string'	}}
 ```
 
-|Lead model ||
-| name|
-|:--:     |
-||
+<table>
+<tr>
+  <th align="center">Lead model</th>
+</tr>
+<tr>
+  <td align="center">name</td>
+</tr>
+</table>
 
 ```javascript
 attributes: {
@@ -129,11 +141,23 @@ I'm going to create an additional User using the same shortcut route with the na
 
 So now I have two instances of the User `model`:
 
-|User model||
-| id  | name|
-|:--:   |:--:       |
-| 1  | 'Nikola Tesla'  | 
-| 2  | 'Neal Stephenson'  | 
+<table>
+<tr>
+  <th align="center" colspan="2">Lead model</th>
+</tr>
+<tr>
+  <th align="center">id</th>
+  <th align="center">name</th>
+</tr>
+<tr>
+  <td align="center">1</td>
+  <td align="center">'Nikola Tesla'</td>
+  </tr>
+  <tr>
+  <td align="center">2</td>
+  <td align="center">'Neal Stephenson'</td>
+  </tr>
+</table>
 
 I can access a `collection` of User `model` instances via the browser using the following GET request to the path: `localhost:1337/user`.  Sails returns the following json:
 
@@ -155,11 +179,23 @@ id: 2
 Next I'll create two instance of the Lead `model` with the names "Thomas Edison" and 
 "Hero Protagonist" using the blueprint shortcut routes.  Like the sails `model` I now have two instances of the Lead `model`:
 
-|Lead model||
-| id  | name|
-|:--:   |:--:       |
-| 1  | 'Thomas Edison'  | 
-| 2  | 'Hero Protagonist'  | 
+<table>
+<tr>
+  <th align="center" colspan="2">Lead model</th>
+</tr>
+<tr>
+  <th align="center">id</th>
+  <th align="center">name</th>
+</tr>
+<tr>
+  <td align="center">1</td>
+  <td align="center">'Thomas Edison'</td>
+  </tr>
+  <tr>
+  <td align="center">2</td>
+  <td align="center">'Hero Protagonist'</td>
+  </tr>
+</table>
 
 I can access a `collection` of Lead `model` instances via the browser using the following GET request to the path: `localhost:1337/lead`.  Sails returns the following json:
 
