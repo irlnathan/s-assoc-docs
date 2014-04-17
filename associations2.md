@@ -42,7 +42,7 @@ attributes: {
 
 The model is contained in a file named `User.js` and resides in `\sailsPeople\api\models\`. When sails starts using `sails lift`, sails uses the model as a template to describe users, but I'm getting ahead of myself.
 
- **Note:** I can generate an initial model from the command-line using `sails generate api user`.  This will create a file in the `sailsPeople/api/models` folder under `User.js`.
+> **Note:** I can generate an initial model from the command-line using `sails generate api user`.  This will create a file in the `sailsPeople/api/models` folder under `User.js`.
 
 I'm also going to do something similiar with my second `model` called **lead**.  A lead within my app, is a person or entity that I'm intersted in selling a particular product or service.  From the command line I'll enter:
 
@@ -110,7 +110,7 @@ Next, I'll create my first user by entering the following request in the browser
 - Which uses the url params `name=Nikola Tesla` for the name property in the user model
 - to create an instance of the user model. 
 
-**Note:** sails automatically creates `id`, `createdAt`, and `updatedAt` attributes without having to explicitedly define them in the model.
+>**Note:** sails automatically creates `id`, `createdAt`, and `updatedAt` attributes without having to explicitedly define them in the model.
 
 Sails returns the following json:
 
@@ -123,7 +123,7 @@ id: 1
 }
 ```
 
-**Note:** in this case sails returns json, not a view.
+>**Note:** in this case sails returns json, not a view.
 
 I'm going to create an addiitonal user using the same shortcut route with the name `Neal Stephenson`
 
@@ -184,7 +184,7 @@ With our models defined, instances created, and collections defined, it's time t
 #Why do we use associations?
 **Associations** provide a way to relate models together so finding, creating, updating, and deleting **instances** of them require less programming.  
 
-##Configuring a _one-way association_ between user and lead.
+##Configuring a <u>_one-way association_</u> between user and lead.
 
 Let's say I want to be able to find, create, update and delete the user who has a particular lead.  To accomplish this I could coinfigure the user `model` to look like this:
  
@@ -205,6 +205,8 @@ It really helps to see this visually so I'll set that up in a table:
 
 <img src="http://i.imgur.com/R50DQM0.jpg" />
 
+> Don't confuse the above diagram with a schema database.  Sails supports both schema and schema-less databases and this diagram refrences the model relationship and not where or how the model instances are persistend (stored).
+
 So after the association I can deduce that **Nikola Tesla** has a lead that points to **Thomas Edison**. Therefore, each `user model instance` will be capable of associating a single `lead model instance`.  This relationship can also be considered a one way relationship.
 
 So now that I have this association between the `vehicle` and `user` models, **_what can I do with it?_**
@@ -213,7 +215,7 @@ So now that I have this association between the `vehicle` and `user` models, **_
 
 For this example, I'm going to use the sails console to make the association.  
 
-**Note:** I can use the same code I use in the sails console in a custom controller action.
+>**Note:** I can use the same code I use in the sails console in a custom controller action.
 
 I'll open the sails console using `sails console`.  From the command prompt I'll enter:
 
@@ -247,5 +249,5 @@ Lead model||
 
 ##Using "populate" to find stuff with a one-way association.
 
-So now that I have 
+ 
 
