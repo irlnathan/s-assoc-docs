@@ -27,7 +27,7 @@ Now that the project is created I'll move on to models.
 #What are models?
 The term model is one of those over-loaded words that can cause a bunch of confusion.  Therefore, I want to provide some context for how I'm using the term `model` in this discussion.  For my purposes a `model` is a group of attributes that describes some thing.  For example, I want to create a User `model` that consists of a single attribute:  **name**. 
 
-User model ||
+|User model ||
 | name|
 |:--:     |
 ||
@@ -58,7 +58,7 @@ sailsPeople
                  |_Lead.js
 ```
 
-User model ||
+|User model ||
 | name|
 |:--:     |
 ||
@@ -69,7 +69,7 @@ attributes: {
 		type: 'string'	}}
 ```
 
-Lead model ||
+|Lead model ||
 | name|
 |:--:     |
 ||
@@ -129,7 +129,7 @@ I'm going to create an additional User using the same shortcut route with the na
 
 So now I have two instances of the User `model`:
 
-User model||
+|User model||
 | id  | name|
 |:--:   |:--:       |
 | 1  | 'Nikola Tesla'  | 
@@ -155,7 +155,7 @@ id: 2
 Next I'll create two instance of the Lead `model` with the names "Thomas Edison" and 
 "Hero Protagonist" using the blueprint shortcut routes.  Like the sails `model` I now have two instances of the Lead `model`:
 
-Lead model||
+|Lead model||
 | id  | name|
 |:--:   |:--:       |
 | 1  | 'Thomas Edison'  | 
