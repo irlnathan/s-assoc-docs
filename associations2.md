@@ -143,7 +143,7 @@ So now I have two instances of the User `model`:
 
 <table>
 <tr>
-  <th align="center" colspan="2">Lead model</th>
+  <th align="center" colspan="2">User model</th>
 </tr>
 <tr>
   <th align="center">id</th>
@@ -222,7 +222,7 @@ With our models defined, instances created, and collections defined, it's time t
 
 ##Configuring a <u>_one-way association_</u> between User and Lead.
 
-Let's say I want to be able to find, create, update and delete the User who has a particular Lead.  To accomplish this I could configure the User `model` to look like this:
+Let's say I want to be able to find, create, update and delete a User who has a particular Lead.  I could find the User and then find the Lead, however, what if I want to find both a user and it's associated lead in one action. To accomplish this I could configure the User `model` to associate leads like this:
  
 ```javascript
 attributes: {
@@ -233,7 +233,7 @@ attributes: {
 }
 ```
 
-Here, I've added a `Lead` parameter to the User `model` attributes.  This Lead parameter sets-up a one-way relationship between the User and a particular `Lead model instance` via a foreign key.
+Here, I've added a `Lead` parameter to the User `model` attributes.  This Lead parameter sets-up a one-way relationship between the User `model`and the Lead `model` via something called a _foreign key_.  The foreign key which now becomes part of the User `model` will contain the `id:` of the instance of a Lead that is associated with the User.
 
 <img src="http://i.imgur.com/4ZDSy3F.jpg" />
 
@@ -271,17 +271,44 @@ User.update({id: 1}, {lead: 1})
 
 Here, I'm updating the **Lead** attribute of the first instance of the **User* model whose `id:` is 1, better known as Nikola Tesla, with a value of 1, better known as Thomas Edison.  This leaves me with:
 
-User model|||
-| id  | name| lead |
-|:--:   |:--:       | :--:|
-| 1  | 'Nikola Tesla'  | 1|
-| 2  | 'Neal Stephenson'  | | 
+<table>
+<tr>
+  <th align="center" colspan="3">User model</th>
+</tr>
+<tr>
+  <th align="center">id</th>
+  <th align="center">name</th>
+  <th align="center">lead</th>
+</tr>
+<tr>
+  <td align="center">1</td>
+  <td align="center">'Nikola Tesla'</td>
+  <td align="center">1</td>
+  </tr>
+  <tr>
+  <td align="center">2</td>
+  <td align="center">'Neal Stephenson'</td>
+   <td align="center"></td>
+  </tr>
+</table>
 
-Lead model||
-| id  | name|
-|:--:   |:--:       |
-| 1  | 'Thomas Edison'  | 
-| 2  | 'Hero Protagonist'  | 
+<table>
+<tr>
+  <th align="center" colspan="2">Lead model</th>
+</tr>
+<tr>
+  <th align="center">id</th>
+  <th align="center">name</th>
+</tr>
+<tr>
+  <td align="center">1</td>
+  <td align="center">'Thomas Edison'</td>
+  </tr>
+  <tr>
+  <td align="center">2</td>
+  <td align="center">'Hero Protagonist'</td>
+  </tr>
+</table>
 
 ##Using "populate" to find stuff with a one-way association.
 
