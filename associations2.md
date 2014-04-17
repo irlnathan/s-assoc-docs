@@ -25,14 +25,14 @@ README.md
 Now that the project is created I'll move on to models.
 
 #What are models?
-The term model is one of those over-loaded words that can cause a bunch of confusion.  Therefore, I want to provide some context for how I'm using the term `model` in this dicussion.  For my purposes a `model` is a group of attributes that describes some thing.  For example, I want to create a user `model` that consists of a single attribute:  **name**. 
+The term model is one of those over-loaded words that can cause a bunch of confusion.  Therefore, I want to provide some context for how I'm using the term `model` in this discussion.  For my purposes a `model` is a group of attributes that describes some thing.  For example, I want to create a User `model` that consists of a single attribute:  **name**. 
 
-user model ||
+User model ||
 | name|
 |:--:     |
 ||
 
-In sails, I can create a **user** `model` as a javascript object:
+In sails, I can create a **User** `model` as a javascript object:
 
 ```javascript
 attributes: {
@@ -40,11 +40,11 @@ attributes: {
     type: 'string'  }}
 ```
 
-The model is contained in a file named `User.js` and resides in `\sailsPeople\api\models\`. When sails starts using `sails lift`, sails uses the model as a template to describe users, but I'm getting ahead of myself.
+The model is contained in a file named `User.js` and resides in `\sailsPeople\api\models\`. When sails starts using `sails lift`, sails uses the model as a template to describe Users, but I'm getting ahead of myself.
 
 > **Note:** I can generate an initial model from the command-line using `sails generate api user`.  This will create a file in the `sailsPeople/api/models` folder under `User.js`.
 
-I'm also going to do something similiar with my second `model` called **lead**.  A lead within my app, is a person or entity that I'm intersted in selling a particular product or service.  From the command line I'll enter:
+I'm also going to do something similar with my second `model` called **Lead**.  A Lead within my app, is a person or entity that I'm interested in selling a particular product or service.  From the command line I'll enter:
 
  `sails generate api lead` 
  
@@ -81,7 +81,7 @@ attributes: {
 ```
 
 ##Model, Model Instance, and Collections
-Throughout this discussion I'm going to differentiate between a model, a model instance and a  collection.  Whereas a model is a description of a thing, a model instance is an example of one of those things.  So with my user `model` I can create an instance of a user from a variety of sources in sails: 
+Throughout this discussion I'm going to differentiate between a model, a model instance and a  collection.  Whereas a model is a description of a thing, a model instance is an example of one of those things.  So with my User `model` I can create an instance of a User from a variety of sources in sails: 
 
 - the sails console
 - via sails blueprint shortcut routes
@@ -89,7 +89,7 @@ Throughout this discussion I'm going to differentiate between a model, a model i
 - via a life cycle callback in a model
 - via a custom controller
 
-I'm going to use most of these methods through-out this discussion.  I'll first use the sails `blueprint shortcut routes` to create a couple of users and a couple of leads.  If you'd like a more detailed explanation of `blueprint shortcut routes` check out: [How do blueprint routes work in sails?](http://irlnathan.github.io/sailscasts/blog/2014/01/17/sailscasts-answers-ep8-how-do-blueprint-actions-and-blueprint-routes-work-in-sails/) 
+I'm going to use most of these methods through-out this discussion.  I'll first use the sails `blueprint shortcut routes` to create a couple of Users and a couple of Leads.  If you'd like a more detailed explanation of `blueprint shortcut routes` check out: [How do blueprint routes work in sails?](http://irlnathan.github.io/sailscasts/blog/2014/01/17/sailscasts-answers-ep8-how-do-blueprint-actions-and-blueprint-routes-work-in-sails/) 
 
 I'll start this project using:
 
@@ -97,7 +97,7 @@ I'll start this project using:
  
 I'll then open a browser using the url: `localhost:1337`
 
-Next, I'll create my first user by entering the following request in the browser: 
+Next, I'll create my first User by entering the following request in the browser: 
 
 `localhost:1337/user/create?name=Nikola Tesla`.  
 
@@ -107,10 +107,10 @@ Next, I'll create my first user by entering the following request in the browser
 - That request matches up to a sails blueprint shortcut route
 - The shortcut route triggers a blueprint create action connected to a user controller
 - Which triggers a create method
-- Which uses the url params `name=Nikola Tesla` for the name property in the user model
-- to create an instance of the user model. 
+- Which uses the url params `name=Nikola Tesla` for the name property in the User model
+- to create an instance of the User model. 
 
->**Note:** sails automatically creates `id`, `createdAt`, and `updatedAt` attributes without having to explicitedly define them in the model.
+>**Note:** sails automatically creates `id`, `createdAt`, and `updatedAt` attributes without having to explicitly define them in the model.
 
 Sails returns the following json:
 
@@ -125,9 +125,9 @@ id: 1
 
 >**Note:** in this case sails returns json, not a view.
 
-I'm going to create an addiitonal user using the same shortcut route with the name `Neal Stephenson`
+I'm going to create an additional User using the same shortcut route with the name `Neal Stephenson`
 
-So now I have two instances of the `user` model:
+So now I have two instances of the User `model`:
 
 User model||
 | id  | name|
@@ -135,7 +135,7 @@ User model||
 | 1  | 'Nikola Tesla'  | 
 | 2  | 'Neal Stephenson'  | 
 
-I can access a `collection` of user `model` instances via the browser using the following GET request to the path: `localhost:1337/user`.  Sails returns the following json:
+I can access a `collection` of User `model` instances via the browser using the following GET request to the path: `localhost:1337/user`.  Sails returns the following json:
 
 ```javascript
 [  {
@@ -152,8 +152,8 @@ id: 2
 }  ]
 ```
 
-Next I'll create two instance of the lead `model` with the names "Thomas Edison" and 
-"Hero Protagonist" using the blueprint shortcut routes.  Like the sails `model` I now have two instances of the lead `model`:
+Next I'll create two instance of the Lead `model` with the names "Thomas Edison" and 
+"Hero Protagonist" using the blueprint shortcut routes.  Like the sails `model` I now have two instances of the Lead `model`:
 
 Lead model||
 | id  | name|
@@ -161,7 +161,7 @@ Lead model||
 | 1  | 'Thomas Edison'  | 
 | 2  | 'Hero Protagonist'  | 
 
-I can access a `collection` of lead `model` instances via the browser using the following GET request to the path: `localhost:1337/lead`.  Sails returns the following json:
+I can access a `collection` of Lead `model` instances via the browser using the following GET request to the path: `localhost:1337/lead`.  Sails returns the following json:
 
 
 ```javascript
@@ -184,9 +184,9 @@ With our models defined, instances created, and collections defined, it's time t
 #Why do we use associations?
 **Associations** provide a way to relate models together so finding, creating, updating, and deleting **instances** of them require less programming.  
 
-##Configuring a <u>_one-way association_</u> between user and lead.
+##Configuring a <u>_one-way association_</u> between User and Lead.
 
-Let's say I want to be able to find, create, update and delete the user who has a particular lead.  To accomplish this I could coinfigure the user `model` to look like this:
+Let's say I want to be able to find, create, update and delete the User who has a particular Lead.  To accomplish this I could configure the User `model` to look like this:
  
 ```javascript
 attributes: {
@@ -197,7 +197,7 @@ attributes: {
 }
 ```
 
-Here, I've added a `lead` parameter to the user `model` attributes.  This lead parameter sets-up a one-way relationship between the user and a particular `lead model instance` via a foreign key.
+Here, I've added a `Lead` parameter to the User `model` attributes.  This Lead parameter sets-up a one-way relationship between the User and a particular `Lead model instance` via a foreign key.
 
 <img src="http://i.imgur.com/4ZDSy3F.jpg" />
 
@@ -205,11 +205,11 @@ It really helps to see this visually so I'll set that up in a table:
 
 <img src="http://i.imgur.com/R50DQM0.jpg" />
 
-> Don't confuse the above diagram with a schema database.  Sails supports both schema and schema-less databases and this diagram refrences the model relationship and not where or how the model instances are persistend (stored).
+> Don't confuse the above diagram with a schema database.  Sails supports both schema and schema-less databases and this diagram references the model relationship and not where or how the model instances are persisted (stored).
 
-So after the association I can deduce that **Nikola Tesla** has a lead that points to **Thomas Edison**. Therefore, each `user model instance` will be capable of associating a single `lead model instance`.  This relationship can also be considered a one way relationship.
+So after the association I can deduce that **Nikola Tesla** has a Lead that points to **Thomas Edison**. Therefore, each `User model instance` will be capable of associating a single `Lead model instance`.  This relationship can also be considered a one way relationship.
 
-So now that I have this association between the `vehicle` and `user` models, **_what can I do with it?_**
+So now that I have this association between the Lead and User `models`, **_what can I do with it?_**
 
 ##Associating models in a one-way relationship
 
@@ -233,7 +233,7 @@ User.update({id: 1}, {lead: 1})
 }
 ```
 
-Here, I'm updating the **lead** attribute of the first instance of the **user* model whose `id:` is 1, better known as Nikola Tesla, with a value of 1, better known as Thomas Edison.  This leaves me with:
+Here, I'm updating the **Lead** attribute of the first instance of the **User* model whose `id:` is 1, better known as Nikola Tesla, with a value of 1, better known as Thomas Edison.  This leaves me with:
 
 User model|||
 | id  | name| lead |
