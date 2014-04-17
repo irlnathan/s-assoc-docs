@@ -97,7 +97,11 @@ I'll start this project using:
  
 I'll then open a browser using the url: `localhost:1337`
 
-Next, I'll create my first user by entering the following request: `localhost:1337/user/create?name=Nikola Tesla`.  **What's happening here?**  
+Next, I'll create my first user by entering the following request in the browser: 
+
+`localhost:1337/user/create?name=Nikola Tesla`.  
+
+**What's happening here?**  
 
 - I'm making a GET request to the path `locahost:1337/user/create`
 - That request matches up to a sails blueprint shortcut route
@@ -205,34 +209,43 @@ So after the association I can deduce that **Nikola Tesla** has a lead that poin
 
 So now that I have this association between the `vehicle` and `user` models, **_what can I do with it?_**
 
-Let's say I have an instance of the `user` model like this: 
+##Associating models in a one-way relationship
+
+For this example, I'm going to use the sails console to make the association.  
+
+**Note:** I can use the same code I use in the sails console in a custom controller action.
+
+I'll open the sails console using `sails console`.  From the command prompt I'll enter:
 
 ```javascript
-{
-	id: '1',
-	name: 'John Galt',
-	emailAddress: 'john@galtgulch.com',
-	encryptedPassword: 'jeidDDJkadsfDDjaoejfjDFjjasdkjfajjfapqeirjasdkfjdfjdf',
-	gravatar: '0bc83cb571cd1c50ba6f3e8a78ef1346'}
+sails> User.update({id: 1}, {lead: 1}).exec(function(err, user){console.log(user);});}
 ```
 
-I also have an instance of the `vehicle` model like this:
+That's hard to read so let's look at the same code formatted in a more readable style:
 
 ```javascript
-{
-	id: '1',
-	manufacturer: 'toyota',
-	color: 'red',
-	type: 'truck',
+User.update({id: 1}, {lead: 1})
+  .exec(function(err, user){
+    console.log(user);
+  });
 }
 ```
 
-So even though I've set-up the configuration of the association between these two models they remain unrelated.  It's easy, however, to relate them.  I just need to add an `owner` parameter to the `vehicle` instance with the id of 1. I can do this a bunch of different ways.  The easiest way during development is to use `blueprint shortcut` routes.  These shortcut routes provide a way to access model methods like find, create, update, destroy, add, and remove.  
+Here, I'm updating the **lead** attribute of the first instance of the **user* model whose `id:` is 1, better known as Nikola Tesla, with a value of 1, better known as Thomas Edison.  This leaves me with:
 
-So I'm going to start my sails project by using `sails lift` and then open a browser to http://localhost:1337/vehicle.
+User model|||
+| id  | name| lead |
+|:--:   |:--:       | :--:|
+| 1  | 'Nikola Tesla'  | 1|
+| 2  | 'Neal Stephenson'  | | 
 
-This will return my single instance of the `vehicle` model.  Just for the heck of it, I'll also take a look at the single instance of my `user` model by opening http://localhost:1337/user.  So I want to update my vehicle instance with `owner=1`.  I can do this by hitting:
+Lead model||
+| id  | name|
+|:--:   |:--:       |
+| 1  | 'Thomas Edison'  | 
+| 2  | 'Hero Protagonist'  | 
 
-http://localhost:1337/vehicle/1/update?owner=1
+##Using "populate" to find stuff with a one-way association.
 
-	
+So now that I have 
+
