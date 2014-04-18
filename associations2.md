@@ -338,12 +338,6 @@ Within associations, there are several methods I'll be using to access, add, rem
   <td align="center">remove</td>
   <td align="center">fill-in</td>
  </tr>
- <tr>
-  <td align="center">save</td>
-  <td align="center">fill-in</td>
- </tr>
-
-
 </table>
 
 The first of these methods is `.populate` which I can use to have sails return all instances of an association.  Given this example:
@@ -359,7 +353,47 @@ I first find 'Nikola Tesla' using the `.findOne` method.  I then chain `.populat
 {  lead: {    name: "Thomas Edison",    id: 1,    createdAt: "2014-04-14T21:31:17.000Z",    updatedAt: "2014-04-14T21:31:17.000Z"  },  name: "Nikola Tesla",  id: 1,  createdAt: "2014-04-14T21:31:04.000Z",  updatedAt: "2014-04-14T21:31:40.000Z"}
 ```
  
-Let's say I want to create a new lead with an existing user, for example, I want to associate the existing user 'Neal Stephenson' with a new lead named 'Aimee Mann'.
+**Let's say I want to create a new lead with an existing user?** For example, I want to associate the existing user 'Neal Stephenson' with a new lead named 'Aimee Mann'.
 
 <img src=http://i.imgur.com/JDohTeu.jpg />
 
+So here I'm going to create the lead an connect it to an existing user, however, the formatting is not exactly easy to read.
+
+```javascript
+sails> Lead.create({name: 'Aimee Mann'}).exec(function(err, lead) {User.findOne(2).exec(function(err, user) { user.lead = lead.id; user.save(function(err){}); }); });
+```
+
+Here is the same code but in a more readable format:
+
+```javascript
+sails> Lead.create({name: 'Aimee Mann'})  .exec(function(err, lead) {    User.findOne(2).exec(function(err, user) {       user.lead = lead.id;  	  user.save(function(err){});    });  });
+```
+
+**What's happening here...**
+
+1. First I create the lead using the `.create` method and passing in one attribute object `{name: 'Aimee Mann'}`.
+2. I find the user I want to assocate with the lead via the `.findOne` method and passing in the `id:` of that user.
+3. Next, I asign the `lead` parameter of the returned user with the returned lead `id:` from step one using `user.lead = lead.id;`
+4. Finally I save the user instance by using the `.save` method.
+
+What about if I want to create a new user with an existing lead? For example. I want to associate an existing lead 'Hero Protagonist' with a new user I'm about to create named 'Boris Karloff'.
+
+<img src=http://i.imgur.com/BrrQ4BR.jpg />
+
+I could use the same strategy I used in the previous example, however, because the user "knows" about the lead I can use a different less verbose approach.
+
+Again here is how I did it in the sails console, however, the formatting is not great for reading.
+
+```javascript
+sails> User.create({name: 'Boris Karloff', lead: 2}).exec(function(err, user { console.log(user);  });
+```
+
+So here's the same code but in a more readable format:
+
+```javascript
+sails> User.create({name: 'Boris Karloff', lead: 2})  .exec(function(err, user {    console.log(user);  });
+```
+
+**What's happening here...**
+
+I'm creating the user, passing in the `name` of the user, but also passing the `id:` of the lead into the lead attribute as `User.create({name: 'Boris Karloff', lead: 2})`.
