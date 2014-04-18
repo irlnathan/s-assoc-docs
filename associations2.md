@@ -1,4 +1,6 @@
-#Getting ready for the project
+# Introduction to Associations
+
+## Getting ready for the project
 Create a sails project using:
 
 `sails new sailsPeople`
@@ -24,7 +26,7 @@ README.md
 
 Now that the project is created I'll move on to models.
 
-#What are models?
+##What are models?
 The term model is one of those over-loaded words that can cause a bunch of confusion.  Therefore, I want to provide some context for how I'm using the term `model` in this discussion.  For my purposes a `model` is a group of attributes that describes some thing.  For example, I want to create a User `model` that consists of a single attribute:  **name**. 
 
 <table>
@@ -41,7 +43,9 @@ In sails, I can create a **User** `model` as a javascript object:
 ```javascript
 attributes: {
   name: {
-    type: 'string'  }}
+    type: 'string'
+  }
+}
 ```
 
 The model is contained in a file named `User.js` and resides in `\sailsPeople\api\models\`. When sails starts using `sails lift`, sails uses the model as a template to describe Users, but I'm getting ahead of myself.
@@ -74,7 +78,9 @@ sailsPeople
 ```javascript
 attributes: {
 	name: {
-		type: 'string'	}}
+		type: 'string'
+	}
+}
 ```
 
 <table>
@@ -89,11 +95,13 @@ attributes: {
 ```javascript
 attributes: {
 	name: {
-		type: 'string'	}}
+		type: 'string'
+	}
+}
 ```
 
-##Model, Model Instance, and Collections
-Throughout this discussion I'm going to differentiate between a model, a model instance and a  collection.  Whereas a model is a description of a thing, a model instance is an example of one of those things.  So with my User `model` I can create an instance of a User from a variety of sources in sails: 
+### Models, Records, and Collections
+Throughout this discussion I'm going to differentiate between a model, a record (model instance) and a collection.  Whereas a model is a description of a thing, a model instance is an example of one of those things.  So with my User `model` I can create an instance of a User from a variety of sources in sails: 
 
 - the sails console
 - via sails blueprint shortcut routes
@@ -217,19 +225,21 @@ id: 2
 
 With our models defined, instances created, and collections defined, it's time to address associations.
 
-#Why do we use associations?
+##Why do we use associations?
 **Associations** provide a way to relate models together so finding, creating, updating, and deleting **instances** of them require less programming.  
 
-##Configuring a <u>_one-way association_</u> between User and Lead.
+###Configuring a <u>_one-way association_</u> between User and Lead.
 
 Let's say I want to be able to find, create, update and delete a User who has a particular Lead.  I could find the User and then find the Lead, however, what if I want to find both a user and it's associated lead in one action. To accomplish this I could configure the User `model` to associate leads like this:
  
 ```javascript
 attributes: {
 	name: {
-		type: 'string'	},
+		type: 'string'
+	},
 	lead: {
-		model: 'user'	}
+		model: 'user'
+	}
 }
 ```
 
@@ -344,13 +354,25 @@ The first of these methods is `.populate` which I can use to have sails return a
 
 ```javascript
 User.findOne(1).populate('lead')
-  .exec(function(err, user){ console.log(user); 	});
+  .exec(function(err, user){ console.log(user); 	
+});
 ```
 
 I first find 'Nikola Tesla' using the `.findOne` method.  I then chain `.populate` to look up the `lead`, in this case 'Thomas Edison'. Sails returns the following json:
 
 ```javascript
-{  lead: {    name: "Thomas Edison",    id: 1,    createdAt: "2014-04-14T21:31:17.000Z",    updatedAt: "2014-04-14T21:31:17.000Z"  },  name: "Nikola Tesla",  id: 1,  createdAt: "2014-04-14T21:31:04.000Z",  updatedAt: "2014-04-14T21:31:40.000Z"}
+{
+  lead: {
+    name: "Thomas Edison",
+    id: 1,
+    createdAt: "2014-04-14T21:31:17.000Z",
+    updatedAt: "2014-04-14T21:31:17.000Z"
+  },
+  name: "Nikola Tesla",
+  id: 1,
+  createdAt: "2014-04-14T21:31:04.000Z",
+  updatedAt: "2014-04-14T21:31:40.000Z"
+}
 ```
  
 **Let's say I want to create a new lead with an existing user?** For example, I want to associate the existing user 'Neal Stephenson' with a new lead named 'Aimee Mann'.
@@ -366,7 +388,13 @@ sails> Lead.create({name: 'Aimee Mann'}).exec(function(err, lead) {User.findOne(
 Here is the same code but in a more readable format:
 
 ```javascript
-sails> Lead.create({name: 'Aimee Mann'})  .exec(function(err, lead) {    User.findOne(2).exec(function(err, user) {       user.lead = lead.id;  	  user.save(function(err){});    });  });
+sails> Lead.create({name: 'Aimee Mann'})
+  .exec(function(err, lead) {
+    User.findOne(2).exec(function(err, user) { 
+      user.lead = lead.id;
+  	  user.save(function(err){});
+    });
+  });
 ```
 
 **What's happening here...**
@@ -391,7 +419,10 @@ sails> User.create({name: 'Boris Karloff', lead: 2}).exec(function(err, user { c
 So here's the same code but in a more readable format:
 
 ```javascript
-sails> User.create({name: 'Boris Karloff', lead: 2})  .exec(function(err, user {    console.log(user);  });
+sails> User.create({name: 'Boris Karloff', lead: 2})
+  .exec(function(err, user {
+    console.log(user);
+  });
 ```
 
 **What's happening here...**
