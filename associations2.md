@@ -312,5 +312,44 @@ Here, I'm updating the **Lead** attribute of the first instance of the **User* m
 
 ##Using "populate" to find stuff with a one-way association.
 
+<img src=http://i.imgur.com/G0JExWe.jpg />
+
+Within associations, there are several methods I'll be using to access, add, remove, and save model instances.  Here is a general description of each method:
+
+<table>
+<tr>
+  <th align="center" colspan="2">Association Methods</th>
+</tr>
+<tr>
+  <th align="center">name</th>
+  <th align="center">description</th>
+</tr>
+ <tr>
+  <td align="center">populate</td>
+  <td align="center">fill-in</td>
+ </tr>
+<tr>
+  <td align="center">add</td>
+  <td align="center">fill-in</td>
+ </tr>
+ <tr>
+  <td align="center">remove</td>
+  <td align="center">fill-in</td>
+ </tr>
+ <tr>
+  <td align="center">save</td>
+  <td align="center">fill-in</td>
+ </tr>
+
+
+</table>
+
+The first of these methods is `populate` which I can use to ahve sails to return all instances of an association.  Given this example:
+
+```javascript
+User.findOne(1).populate('lead')
+  .exec(function(err, user){ console.log(user); 	});
+```
+
  
 
