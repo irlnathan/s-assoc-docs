@@ -344,12 +344,14 @@ Within associations, there are several methods I'll be using to access, add, rem
 
 </table>
 
-The first of these methods is `populate` which I can use to ahve sails to return all instances of an association.  Given this example:
+The first of these methods is `populate` which I can use to have sails return all instances of an association.  Given this example:
 
 ```javascript
 User.findOne(1).populate('lead')
   .exec(function(err, user){ console.log(user); 	});
 ```
+
+I first find 'Nikola Tesla' using the `.findOne` method.  I then chain `.populate` to look up the `lead`, in this case 'Thomas Edison'.
 
  
 
