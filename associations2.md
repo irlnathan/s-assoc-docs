@@ -269,7 +269,7 @@ User.update({id: 1}, {lead: 1})
 }
 ```
 
-Here, I'm updating the **Lead** attribute of the first instance of the **User* model whose `id:` is 1, better known as Nikola Tesla, with a value of 1, better known as Thomas Edison.  This leaves me with:
+Here, I'm updating the **Lead** attribute of the first instance of the **User** model whose `id:` is 1, better known as Nikola Tesla, with a value of 1, better known as Thomas Edison.  This leaves me with:
 
 <table>
 <tr>
@@ -310,6 +310,8 @@ Here, I'm updating the **Lead** attribute of the first instance of the **User* m
   </tr>
 </table>
 
+So now that I've created the association, what can I do with it?
+
 ##Using "populate" to find stuff with a one-way association.
 
 <img src=http://i.imgur.com/G0JExWe.jpg />
@@ -344,14 +346,20 @@ Within associations, there are several methods I'll be using to access, add, rem
 
 </table>
 
-The first of these methods is `populate` which I can use to have sails return all instances of an association.  Given this example:
+The first of these methods is `.populate` which I can use to have sails return all instances of an association.  Given this example:
 
 ```javascript
 User.findOne(1).populate('lead')
   .exec(function(err, user){ console.log(user); 	});
 ```
 
-I first find 'Nikola Tesla' using the `.findOne` method.  I then chain `.populate` to look up the `lead`, in this case 'Thomas Edison'.
+I first find 'Nikola Tesla' using the `.findOne` method.  I then chain `.populate` to look up the `lead`, in this case 'Thomas Edison'. Sails returns the following json:
 
+```javascript
+{  lead: {    name: "Thomas Edison",    id: 1,    createdAt: "2014-04-14T21:31:17.000Z",    updatedAt: "2014-04-14T21:31:17.000Z"  },  name: "Nikola Tesla",  id: 1,  createdAt: "2014-04-14T21:31:04.000Z",  updatedAt: "2014-04-14T21:31:40.000Z"}
+```
  
+Let's say I want to create a new lead with an existing user, for example, I want to associate the existing user 'Neal Stephenson' with a new lead named 'Aimee Mann'.
+
+<img src=http://i.imgur.com/JDohTeu.jpg />
 
