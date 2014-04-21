@@ -23,10 +23,12 @@ package.json
 README.md                
 ```
 
-Now that the project is created I'll move on to models.
+##Overview of the project?
+
+I want to create a data model for a an application I'm building called -- _**sailsPeople**_.  Initially, the application will have **Users** (e.g. people that will use the application to track their sales activity) and **Leads** (e.g. a person or entity that **Users** are interested in selling a particular product or service).   
 
 ##What are models?
-The term [**model**]() is one of those over-loaded words that can cause a bunch of confusion.  Therefore, I want to provide some context for how I'm using the term "model" in this discussion.  For my purposes, a **model** is a representation of a set of structured data, usually corresponding with a table in a SQL database or a collection in databases like MongoDB, Redis, or Riak.
+The term [**model**]() is one of those over-loaded words that can cause a bunch of confusion.  Therefore, I want to provide some context for how I'm using the term "model" in this project.  For my purposes, a **model** is a representation of a set of structured data, usually corresponding with a table in a SQL database or a collection in databases like MongoDB, Redis, or Riak.
 
 ##When do I use models?
 Models are useful any time I want to store, retrieve, update, and/or delete data in my app.  For instance, my app might need to save the data entered into a web form to a model.  Or I might find some [records]() stored in one of my models in order to display a dynamic list of orders or receipts.
