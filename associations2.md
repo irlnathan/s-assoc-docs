@@ -20,14 +20,23 @@ sailsPeople
 app.js
 Gruntfile.js
 package.json
-README.md
-                
+README.md                
 ```
 
 Now that the project is created I'll move on to models.
 
 ##What are models?
-The term model is one of those over-loaded words that can cause a bunch of confusion.  Therefore, I want to provide some context for how I'm using the term `model` in this discussion.  For my purposes a `model` is a group of attributes that describes some thing.  For example, I want to create a User `model` that consists of a single attribute:  **name**. 
+The term [**model**]() is one of those over-loaded words that can cause a bunch of confusion.  Therefore, I want to provide some context for how I'm using the term "model" in this discussion.  For my purposes, a **model** is a representation of a set of structured data, usually corresponding with a table in a SQL database or a collection in databases like MongoDB, Redis, or Riak.
+
+##When do I use models?
+Models are useful any time I want to store, retrieve, update, and/or delete data in my app.  For instance, my app might need to save the data entered into a web form to a model.  Or I might find some [records]() stored in one of my models in order to display a dynamic list of orders or receipts.
+
+
+### Defining models
+
+A model is defined by group of [attributes]() that describe a particular _thing_ or _entity_.
+
+For example, I want to create a `User` model that consists of a single attribute:  `name`.
 
 <table>
 <tr>
@@ -38,25 +47,33 @@ The term model is one of those over-loaded words that can cause a bunch of confu
 </tr>
 </table>
 
-In sails, I can create a **User** `model` as a javascript object:
+In Sails, I can define a **User** model as a javascript object:
 
 ```javascript
-attributes: {
-  name: {
-    type: 'string'
+{
+  attributes: {
+    name: {
+      type: 'string'
+    }
   }
 }
 ```
 
-The model is contained in a file named `User.js` and resides in `\sailsPeople\api\models\`. When sails starts using `sails lift`, sails uses the model as a template to describe Users, but I'm getting ahead of myself.
+The model is contained in a file named `User.js` and resides in the `sailsPeople/api/models/` folder. When I start my app using `sails lift`, Sails will connect to the database where my user data is stored and provide an interace for me to interact with it.  By default, Sails stores data in a temporary file on my hard disk, but I can change this to MySQL, PostgreSQL, MongoDB, Redis, or CouchDB at any time down the road.
 
-> **Note:** I can generate an initial model from the command-line using `sails generate api user`.  This will create a file in the `sailsPeople/api/models` folder under `User.js`.
+I'm going to do something similar with my second model called **Lead**.  In my app, a Lead is a person or entity that I'm interested in selling a particular product or service. 
 
-I'm also going to do something similar with my second `model` called **Lead**.  A Lead within my app, is a person or entity that I'm interested in selling a particular product or service.  From the command line I'll enter:
+This time, however, I'll cheat a little bit.  The Sails command-line tool ships with a few simple [generators]() for quickly generating common code files.  This keeps me from having to manually create new files and put together the boilerplate code every time I want to add something new to my app.
 
- `sails generate api lead` 
+To define my **Lead** model, I'll open the command line and enter:
+
+ ```sh
+ $ sails generate api lead
+ ```
  
- I now have two models configured:
+When I open `sailsPeople/api/models/Lead.js`, an empty model has been created for me.  All I have to do is add a **name** attribute.
+
+At this point, I have defined and configured two models:
 
 ```javascript
 sailsPeople
@@ -100,37 +117,32 @@ attributes: {
 }
 ```
 
-### Models, Records, and Collections
-Throughout this discussion I'm going to differentiate between a model, a record (model instance) and a collection.  Whereas a model is a description of a thing, a model instance is an example of one of those things.  So with my User `model` I can create an instance of a User from a variety of sources in sails: 
+## Working with Data
 
-- the sails console
-- via sails blueprint shortcut routes
-- via sails blueprint rest routes
-- via a life cycle callback in a model
-- via a custom controller
+Throughout this discussion I'm going to differentiate between a **model**, a **record** (or _model instance_) and a collection.  Whereas a model is a _definition_ of a thing (e.g. **User**), a record is an _instance_ of one of those things (e.g. `{name: "robert", id: 4}`). 
 
-I'm going to use most of these methods through-out this discussion.  I'll first use the sails `blueprint shortcut routes` to create a couple of Users and a couple of Leads.  If you'd like a more detailed explanation of `blueprint shortcut routes` check out: [How do blueprint routes work in sails?](http://irlnathan.github.io/sailscasts/blog/2014/01/17/sailscasts-answers-ep8-how-do-blueprint-actions-and-blueprint-routes-work-in-sails/) 
+So with my User model, I can create new records in any number of different places in Sails:
 
-I'll start this project using:
+- from the [`sails console`]()
+- by hitting one of my [blueprint routes]()
+- from a [lifecycle callback]() defined in the User model itself
+- from a custom action in a [controller]()
 
- `~> sails lift`
- 
-I'll then open a browser using the url: `localhost:1337`
+I'll use a few different methods from the list above to work with data throughout this discussion, starting with **blueprint routes**.  If you'd like a more detailed explanation of blueprint routing, particularly the **shortcut blueprint routes** below, check out: [How do blueprint routes work in sails?](http://irlnathan.github.io/sailscasts/blog/2014/01/17/sailscasts-answers-ep8-how-do-blueprint-actions-and-blueprint-routes-work-in-sails/) 
 
-Next, I'll create my first User by entering the following request in the browser: 
+### Creating some users
+First, I want to create a couple of Users and a couple of Leads.  I'll lift my app using `sails lift`.
 
-`localhost:1337/user/create?name=Nikola Tesla`.  
+I'll create my first User by opening my browser and entering the following URL: [`http://localhost:1337/user/create?name=Nikola Tesla`]()
 
 **What's happening here?**  
 
-- I'm making a GET request to the path `locahost:1337/user/create`
-- That request matches up to a sails blueprint shortcut route
-- The shortcut route triggers a blueprint create action connected to a user controller
-- Which triggers a create method
-- Which uses the url params `name=Nikola Tesla` for the name property in the User model
-- to create an instance of the User model. 
-
->**Note:** sails automatically creates `id`, `createdAt`, and `updatedAt` attributes without having to explicitly define them in the model.
+- My browser is sending a GET request to my running Sails app at [localhost:1337]()
+- That request matches up to a **shortcut blueprint** route, [/user/create]()
+- The shortcut blueprint triggers an action, `create()` defined in `api/controllers/UserController.js`.
+- I haven't defined a custom `create` action, so the implicit [**blueprint action**]() will be run in its place.
+- This inspects the [parameters]() I passed in (`?name=Nikola Tesla`) and passes them to [`User.create()`]().
+- This creates a record in my User model for a new user named "Nikola Tesla". 
 
 Sails returns the following json:
 
@@ -143,15 +155,18 @@ id: 1
 }
 ```
 
->**Note:** in this case sails returns json, not a view.
+>**Note:**
+> 
+> By default, Sails adds `id`, `createdAt`, and `updatedAt` attributes without me having to explicitly define them in the model.  This behavior [is configurable]().
 
-I'm going to create an additional User using the same shortcut route with the name `Neal Stephenson`
 
-So now I have two instances of the User `model`:
+Next, I'm going to create an additional User with the name `Neal Stephenson`.  I'll visit  exactly the same URL as before, but change out the `name` parameter: [`http://localhost:1337/user/create?name=Neal Stephenson`]()
+
+So now I have two records stored in my User model:
 
 <table>
 <tr>
-  <th align="center" colspan="2">User model</th>
+  <th align="center" colspan="2">User (records)</th>
 </tr>
 <tr>
   <th align="center">id</th>
@@ -167,29 +182,40 @@ So now I have two instances of the User `model`:
   </tr>
 </table>
 
-I can access a `collection` of User `model` instances via the browser using the following GET request to the path: `localhost:1337/user`.  Sails returns the following json:
 
-```javascript
+### Finding users
+
+So now that I have some users stored, let's talk about how to retrieve them.
+
+
+Using the blueprint API, I can access my User records without writing any code.  I simply open up my browser again and visit: [`http://localhost:1337/user`]()
+(remember: this means my browser is sending a GET request to Sails at the `/user` path)
+
+Sails returns the following json:
+
+```json
 [  {
-name: "Nikola Tesla",
-createdAt: "2014-04-14T17:18:49.439Z",
-updatedAt: "2014-04-14T17:18:49.439Z",
-id: 1
+  "name": "Nikola Tesla",
+  "createdAt": "2014-04-14T17:18:49.439Z",
+  "updatedAt": "2014-04-14T17:18:49.439Z",
+  "id": 1
 },
 {
-name: "Neal Stephenson",
-createdAt: "2014-04-14T20:47:01.703Z",
-updatedAt: "2014-04-14T20:47:01.703Z",
-id: 2
+  "name": "Neal Stephenson",
+  "createdAt": "2014-04-14T20:47:01.703Z",
+  "updatedAt": "2014-04-14T20:47:01.703Z",
+  "id": 2
 }  ]
 ```
 
-Next I'll create two instance of the Lead `model` with the names "Thomas Edison" and 
-"Hero Protagonist" using the blueprint shortcut routes.  Like the sails `model` I now have two instances of the Lead `model`:
+
+### Creating some leads
+
+Next I'll create two Leads with the names "Thomas Edison" and "Hero Protagonist" using the `/lead/create` shortcut blueprint route.  Now I have two leads:
 
 <table>
 <tr>
-  <th align="center" colspan="2">Lead model</th>
+  <th align="center" colspan="2">Lead (records)</th>
 </tr>
 <tr>
   <th align="center">id</th>
@@ -205,85 +231,109 @@ Next I'll create two instance of the Lead `model` with the names "Thomas Edison"
   </tr>
 </table>
 
-I can access a `collection` of Lead `model` instances via the browser using the following GET request to the path: `localhost:1337/lead`.  Sails returns the following json:
+### Finding leads
+
+Accessing stored leads from the browser works pretty much like accessing stored users. I just send a GET request to [`http://localhost:1337/lead`] and Sails returns the following json:
 
 
-```javascript
+```json
 [ {
-name: "Thomas Edison",
-createdAt: "2014-04-14T20:47:25.571Z",
-updatedAt: "2014-04-14T20:47:25.571Z",
-id: 1
+  "name": "Thomas Edison",
+  "createdAt": "2014-04-14T20:47:25.571Z",
+  "updatedAt": "2014-04-14T20:47:25.571Z",
+  "id": 1
 },
 {
-name: "Hero Protagonist",
-createdAt: "2014-04-14T20:48:07.190Z",
-updatedAt: "2014-04-14T20:48:07.190Z",
-id: 2
+  "name": "Hero Protagonist",
+  "createdAt": "2014-04-14T20:48:07.190Z",
+  "updatedAt": "2014-04-14T20:48:07.190Z",
+  "id": 2
 } ]
 ```
 
-With our models defined, instances created, and collections defined, it's time to address associations.
+With our models defined, attributes configured, and some initial data created, it's time to address associations.
 
 ##Why do we use associations?
-**Associations** provide a way to relate models together so finding, creating, updating, and deleting **instances** of them require less programming.  
+**Associations** provide a way to relate models so that finding, creating, updating, and destroying their records requires less programming.
 
-###Configuring a <u>_one-way association_</u> between User and Lead.
+###Configuring a <u>_one-way association_</u> between User and Lead
 
-Let's say I want to be able to find, create, update and delete a User who has a particular Lead.  I could find the User and then find the Lead, however, what if I want to find both a user and it's associated lead in one action. To accomplish this I could configure the User `model` to associate leads like this:
+Let's say I want to be able to find a particular User, and also the Lead she is associated with.  I could manage the relationship manually: i.e. find the User, find the Lead, then format the result. However, it would be a lot nicer to look up both a user and its associated lead in one action.
+
+To accomplish this, I'll configure the User model with a new attribute called `currentLead`-- but this time, instead of specifying a primitive **type** like "string" or "integer", I'll configure the `currentLead` attribute as an association:
  
 ```javascript
+// User
 attributes: {
 	name: {
 		type: 'string'
 	},
-	lead: {
-		model: 'user'
+	currentLead: {
+		model: 'Lead'
 	}
 }
 ```
 
-Here, I've added a `Lead` parameter to the User `model` attributes.  This Lead parameter sets-up a one-way relationship between the User `model`and the Lead `model` via something called a _foreign key_.  The foreign key which now becomes part of the User `model` will contain the `id:` of the instance of a Lead that is associated with the User.
+The `currentLead` attribute represents a one-way relationship between the User model and the Lead model.  What this means is that I can now associate a User's (e.g. Nikola's) `currentLead` with one of my leads (e.g. Thomas.)
+
+
+
+### How does this work?
+Sails abstracts away a lot of the complexity of associations for us, and it supports both "schema-ful" and "schema-less" databases. The underlying implementation of associations is slightly different in each case, but since it can be helpful to examine what's going on under the covers, I'll provide a quick overview using terminology from the classic relational model.
+
+Sails implements one-way relationships using something called a _foreign key_.   Whenever a `currentLead` is set on a user record, a hidden _foreign key_ is created.  A record's foreign key is simply the _primary key_ value of the _**other**_ record in the relationship.  A _primary key_ is the one particular attribute in a model which is always guaranteed to be unique for every record.  By default, Sails sets this up for me as `id`.  
+
+So for example, if a User record has a `currentLead`, it implicitly maps to the `id` of the associated Lead (for instance, `1`).
 
 <img src="http://i.imgur.com/4ZDSy3F.jpg" />
 
-It really helps to see this visually so I'll set that up in a table:
+It really helps to see this in action, so I'll set up an example using a table to visualize the records stored in my User and Lead models before and after:
 
 <img src="http://i.imgur.com/R50DQM0.jpg" />
 
-> Don't confuse the above diagram with a schema database.  Sails supports both schema and schema-less databases and this diagram references the model relationship and not where or how the model instances are persisted (stored).
+> Note: This _logical_ diagram reflects the the model relationship and not where or how the model instances are persisted (stored).
 
-So after the association I can deduce that **Nikola Tesla** has a Lead that points to **Thomas Edison**. Therefore, each `User model instance` will be capable of associating a single `Lead model instance`.  This relationship can also be considered a one way relationship.
+After creating this association, I can deduce that **Nikola Tesla** has a `currentLead` attribute that points to **Thomas Edison**. As you might expect, the `currentLead` attribute in each User record is now capable of referring to a particular Lead record.  It's important to point out that `currentLead` doesn't necessarily have to be set-- a user might not have a lead!  Also, multiple users can have the same `currentLead`-- so Nikola and Neal might both have Thomas Edison as their `currentLead`.  That's why this type of association is referred to as a **one-way relationship**.
 
-So now that I have this association between the Lead and User `models`, **_what can I do with it?_**
+So! Now that I have this association between the Lead and User `models`, **_what can I do with it?_**
 
-##Associating models in a one-way relationship
 
-For this example, I'm going to use the sails console to make the association.  
+## Associating models in a one-way relationship
 
->**Note:** I can use the same code I use in the sails console in a custom controller action.
+For this example, I'm going to use the sails console to make an association between a particular User and a particular Lead.  
 
-I'll open the sails console using `sails console`.  From the command prompt I'll enter:
+>**Note:** I can use the same code I use to communicate with my models in the `sails console` in a custom controller action.
+
+First I'll open the [Sails console]() by running the follwing command in my terminal:
+
+```sh
+$ sails console
+```
+
+Now, at the `sails> ` prompt, I'll enter:
 
 ```javascript
-sails> User.update({id: 1}, {lead: 1}).exec(function(err, user){console.log(user);});}
+sails> User.update({id: 1}).set({lead: 1}).exec(function(err, user){console.log(user);});}
 ```
 
 That's hard to read so let's look at the same code formatted in a more readable style:
 
 ```javascript
-User.update({id: 1}, {lead: 1})
+User.update({id: 1})
+  .set({lead: 1})
   .exec(function(err, user){
     console.log(user);
   });
 }
 ```
 
-Here, I'm updating the **Lead** attribute of the first instance of the **User** model whose `id:` is 1, better known as Nikola Tesla, with a value of 1, better known as Thomas Edison.  This leaves me with:
+<!-- the following paragraph is really nice- it's an excellent way to do examples: ~mike -->
+
+Here, I'm updating the **currentLead** of the first user instance (the record where `id:` is 1).  This particular user is better known as Nikola Tesla, and his **currentLead** has a value of 1, referring to the Lead known as Thomas Edison.  This leaves me with:
 
 <table>
 <tr>
-  <th align="center" colspan="3">User model</th>
+  <th align="center" colspan="3">User</th>
 </tr>
 <tr>
   <th align="center">id</th>
@@ -326,29 +376,52 @@ So now that I've created the association, what can I do with it?
 
 <img src=http://i.imgur.com/G0JExWe.jpg />
 
-Within associations, there are several methods I'll be using to access, add, remove, and save model instances.  Here is a general description of each method:
+There are several methods I'll be using to **populate** (i.e. look up), **add**, and **remove** associated records.  Here is a general description of each method:
+
+
+
+<!--
+example of how to do this with md tables
+(I think it's harder to read honestly- like yours better, but I'm just leaving it here as a note)  Only issue is that when you use HTML tables, you can't use markdown syntax for bolding, code snippets, etc.  Tough call
+
+
+~mike
+#### Association Methods
+
+|  method  | description |
+|-----------------------------------|
+|    `User.find().populate()` |  todo |
+|    `nikola.add()     | todo |
+|    `nikola.remove()`     |   todo |
+-->
+
 
 <table>
 <tr>
   <th align="center" colspan="2">Association Methods</th>
 </tr>
 <tr>
-  <th align="center">name</th>
+  <th align="center">method</th>
   <th align="center">description</th>
 </tr>
  <tr>
-  <td align="center">populate</td>
-  <td align="center">fill-in</td>
+  <td align="center">`User.populate()`</td>
+  <td align="center">todo</td>
  </tr>
 <tr>
-  <td align="center">add</td>
-  <td align="center">fill-in</td>
+  <td align="center">`nikola.add()`</td>
+  <td align="center">todo</td>
  </tr>
  <tr>
-  <td align="center">remove</td>
-  <td align="center">fill-in</td>
+  <td align="center">`nikola.remove()`</td>
+  <td align="center">todo</td>
  </tr>
 </table>
+
+
+
+
+<!-- I got to about here and had to stop ~mike -->
 
 The first of these methods is `.populate` which I can use to have sails return all instances of an association.  Given this example:
 
