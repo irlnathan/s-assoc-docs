@@ -35,7 +35,7 @@ Models are useful any time I want to store, retrieve, update, and/or delete data
 
 I can simply configure my **models**, choose an [**Adapter**]() via a [**Connection**](), and rely upon [**Waterline**]() methods to access and manipulate my data.
 
-<img src="http://i.imgur.com/zzZP42z.jpg" />
+<img src="http://i.imgur.com/0z4A2Ok.jpg" />
  
 ### Defining models
 
@@ -87,12 +87,12 @@ attributes: {
 
 At this point, I have defined and configured two models:
 
-<img src="http://i.imgur.com/0OWp9gy.jpg" />
+<img src="http://i.imgur.com/NyYnaQe.jpg" />
 
 
-### Models, Instances of Models, and Collections
+### Models, Records, and Collections
 
-Throughout this project I'm going to differentiate between a **model**, an **instance of a model** and a **collection**.  
+Throughout this project I'm going to differentiate between a **model**, a **record** and a **collection**.  
 
 A **model** is a _definition_ of a thing (e.g. User.js): 
 
@@ -104,7 +104,7 @@ attributes: {
 }
 ```
 
-An **instance of a model** is _one_ of those things:
+An **record** is _one_ of those things:
 
 ```json
 {
@@ -134,7 +134,7 @@ An **instance of a model** is _one_ of those things:
 
 > Don't confuse my use of the collection with a collection in MongoDB or a Backbone collection, although they share some similar qualities they are not the same thing.
 
-So with my User model, I can create new instances of the model in any number of different places in Sails:
+So with my User model, I can create new _Record_ in any number of different places in Sails:
 
 - from the [`sails console`]()
 - by hitting one of my [blueprint routes]()
@@ -143,8 +143,10 @@ So with my User model, I can create new instances of the model in any number of 
 
 I'll use a few different methods from the list above to work with data throughout this project, starting with **blueprint routes**.  If you'd like a more detailed explanation of blueprint routing, particularly the **shortcut blueprint routes** below, check out: [How do blueprint routes work in sails?](http://irlnathan.github.io/sailscasts/blog/2014/01/17/sailscasts-answers-ep8-how-do-blueprint-actions-and-blueprint-routes-work-in-sails/) 
 
-### Instances of Models: _Creating_ some Users
-First, I want to create a couple of Users and a couple of Leads.  I'll lift my app using `sails lift`.
+### Records: _creating_ some Users and Profiles
+>**Task:** Create a couple of _**Users**_ and what will be there associated _**Profiles**_. 
+
+I'll lift my app using `sails lift`.
 
 I'll create my first User by opening my browser and entering the following URL: [`http://localhost:1337/user/create?name=Nikola Tesla`]()
 
@@ -155,9 +157,9 @@ I'll create my first User by opening my browser and entering the following URL: 
 - The shortcut blueprint triggers an action, `create()` defined in `api/controllers/UserController.js`.
 - **Note:** I haven't defined a custom `create` action, so the implicit [**blueprint action**]() will be run in its place.
 - This inspects the [parameters]() I passed in (`?name=Nikola Tesla`) and passes them to [`User.create()`]().
-- This creates a instance of my User model for a new user named "Nikola Tesla". 
+- This creates a _Record_ using my User _model_ for a new user named "Nikola Tesla". 
 
-After creating the instance of the User model, Sails returns the following json:
+After creating the the user _Nikola Tesla_, Sails returns the following json:
 
 ```javascript
 {
@@ -174,11 +176,11 @@ id: 1
 
 Next, I'm going to create an additional User with the name `Neal Stephenson`.  I'll visit exactly the same URL as before, but change out the `name` parameter: [`http://localhost:1337/user/create?name=Neal Stephenson`]()
 
-So now I have two instances of my User model:
+So now I have two _Records_ of my User _model_:
 
 <table>
 <tr>
-  <th align="center" colspan="2">Instances of User Model</th>
+  <th align="center" colspan="4">Instances of User Model</th>
 </tr>
 <tr>
   <th align="center">id</th>
@@ -200,36 +202,7 @@ So now I have two instances of my User model:
   </tr>
 </table>
 
-
-### Instances of Models: _Finding_ Users
-
-So now that I have some users stored, let's talk about how to retrieve them.
-
-
-Using the blueprint API, I can access my User records without writing any code.  I simply open up my browser again and visit: [`http://localhost:1337/user`]()
-(remember: this means my browser is sending a GET request to Sails at the `/user` path)
-
-Sails returns the following json:
-
-```json
-[  {
-  "name": "Nikola Tesla",
-  "createdAt": "2014-04-14T17:18:49.439Z",
-  "updatedAt": "2014-04-14T17:18:49.439Z",
-  "id": 1
-},
-{
-  "name": "Neal Stephenson",
-  "createdAt": "2014-04-14T20:47:01.703Z",
-  "updatedAt": "2014-04-14T20:47:01.703Z",
-  "id": 2
-}  ]
-```
-
-
-### Instances of Models: _Creating_ some Profiles
-
-Next I'll create two Profiles using the `/profile/create?aboutMe=This is stuff about me&gender=male` shortcut blueprint route.
+Next I'll create two Profiles `/profile/create?aboutMe=This is stuff about me&gender=male`.
 
 <table>
 <tr>
@@ -257,9 +230,33 @@ Next I'll create two Profiles using the `/profile/create?aboutMe=This is stuff a
   </tr>
 </table>
 
-### Instances of Models: _Finding_ Profiles
 
-Accessing stored profiles from the browser works pretty much like accessing stored users. I just send a GET request to [`http://localhost:1337/profile`] and Sails returns the following json:
+### Records: _finding_ Users and Profiles
+
+So now that I have some Users and Profiles, let's talk about how to retrieve them.
+
+
+Using the blueprint API, I can access my Users and Profiles without writing any code.  I simply open up my browser again and visit: [`http://localhost:1337/user`]()
+(remember: this means my browser is sending a GET request to Sails at the `/user` path)
+
+Sails returns the following json:
+
+```json
+[  {
+  "name": "Nikola Tesla",
+  "createdAt": "2014-04-14T17:18:49.439Z",
+  "updatedAt": "2014-04-14T17:18:49.439Z",
+  "id": 1
+},
+{
+  "name": "Neal Stephenson",
+  "createdAt": "2014-04-14T20:47:01.703Z",
+  "updatedAt": "2014-04-14T20:47:01.703Z",
+  "id": 2
+}  ]
+```
+
+Accessing stored Profiles from the browser is just as easy via [`http://localhost:1337/profile`]().  As before, Sails returns the following json:
 
 
 ```json
@@ -282,40 +279,40 @@ Accessing stored profiles from the browser works pretty much like accessing stor
 With our models defined, attributes configured, and some initial data created, it's time to address associations.
 
 ##Why do we use _Associations_?
-**Associations** provide a way to relate models so that finding, creating, updating, and destroying instances of the models requires less programming.  Using _Associations_ has two parts: configuring the model and then using dedicated methods which use the associations to make finding and changing models instances easier.
+**Associations** provide a way to relate models so that finding, creating, updating, and destroying _Records_ requires less programming.  _Associations_ require some initial configuration, however, once configured, allow me to find and change records easily.
 
-###Configuring the Model: a _one-way association_
+##One-Way Associations: Configuring, Finding, Creating, Updating and Removing Associations
+
+###Configuring the _Model_: a _one-way association_
+>**Task:** Configure an association where each User can be associated with one Profile
 
 Let's say I want to be able to find a particular User, and also the Profile she is associated with.  I could manage the relationship manually: i.e. find the User, find the Profile, then format the result. However, it would be a lot nicer to look up both a User and its associated Profile in one action.
 
-To accomplish this, I'll configure the User _model_ with a new attribute called **Profile**-- but this time, instead of specifying a primitive type like "string" or "integer", I'll configure the **Profile** _attribute_ as an association:
+To accomplish this, I'll configure the User _model_ with a new attribute called **Profile**-- but this time, instead of specifying a primitive type like "string" or "integer", I'll configure the Profile _**attribute** _ as an association:
 
 <img src="http://i.imgur.com/DOZDdoG.jpg" />
 
-The **Profile** _**association** attribute_ represents a one-way relationship between the User _model_ and the Profile _model_.  I could name this attribute 'foo', however, since it relates to the **Profile** _model_ I'm going to stay consistent and name the _attribute_ Profile. What this means is that I can now associate a particular User's (e.g. Nikola Tesla's) **Profile** _attribute_ with one of my **Profile** _model_ instances (e.g. id: 1).
-
+The Profile _**association** attribute_ represents a one-way relationship between the User _model_ and the Profile _model_.  I could name this attribute 'foo', however, since it relates to the **Profile** _model_ I'm going to stay consistent and name the _association attribute_ Profile. What this means is that I can now associate the user, _Nikola Tesla_, with his _Profile_.
 
 Sails abstracts away a lot of the complexity of associations for me, and it supports both "schema-ful" and "schema-less" databases. The underlying implementation of associations is slightly different in each case, but since it can be helpful to examine what's going on under the covers, I'll provide a quick overview using terminology from the classic relational model.
 	
-Each instance of the model contains a _**Primary Key**_ which is an attribute whose value is guaranteed to be unique between the instances of the model.  For example, the default _**Primary Key**_ in MongoDB would look something like `_id: ObjectId("52752fd8a61584b30c000001")` versus PostgreSQL which would look something like `id: 1`.  
+Each _Record_ contains a _**Primary Key**_ which is an attribute whose value is guaranteed to be unique between _Records_.  For example, the default _**Primary Key**_ in MongoDB would look something like `_id: ObjectId("52752fd8a61584b30c000001")` versus PostgreSQL which would look something like `id: 1`.  
 
-In this project, I have an instance of the **User** model -- _Nikola Tesla_ with an **id:** of 1.  The _id:_ **is** the _Primary Key_ and this _primary key_ becomes very useful when I want to associate one instance of the _model_ with another instance of a _model_.  
+In this project, I have _Record_ -- _Nikola Tesla_ with an **id:** of 1.  The _id:_ **is** the _Primary Key_ and this _primary key_ becomes very useful when I want to associate _Nikola Tesla_ with his _Profile_. 
 
-<img src="http://i.imgur.com/zO6TSzC.jpg" />
+<img src="http://i.imgur.com/59L86a7.jpg" />
 
-It really helps to see this in action, so I'll set up an example using a table to visualize the instances of the models stored in my **User** and **Profile** models before and after the association is made.
+It really helps to see this change before and after the association is made.
 
-<img src="http://i.imgur.com/5oku524.jpg" />
+<img src="http://i.imgur.com/Jw5s6ke.jpg?1" />
 
 > Note: This _logical_ diagram reflects the the model relationship and not where or how the records are persisted (stored).
 
-Before I make the association _Nikola Tesla_ and _Profile_ exist independently of each other.  However, a relationship will be created when I update the instances of the _model_ to include an association.
+Before I make the association _Nikola Tesla_ and his _Profile_ exist independently of each other.  However, a relationship will be created when I update Nikola's Profile _association attribute_ with the _Primary Key_ of his Profile _Record_.
 
-### Updating instances of a model: a _one-way association_
+### Updating a _Record's_ association: a one-way association
 
-I'm going to use the sails console to make an association between _Nikola Tesla_ and a particular Profile.  
-
->**Note:** I can use the same code I use to communicate with my models in the `sails console` as in a custom controller action.
+>**Task:** Create an association between _Nikola Tesla_ and his Profile.  
 
 First I'll open the [Sails console]() by running the follwing command in my terminal:
 
@@ -339,20 +336,24 @@ User.update({id: 1})
   });
 ```
 
-So now that I've placed the Profile's _primary key_  as the value of the **Profile** _attribute_ in the User _model_ , sails can deduce that **the profile** is associated with **Nikola Tesla**.  
+####How does this work?
 
-<img src="http://i.imgur.com/bKGYcIm.jpg" />
+1. I pass the `.update` method the _primary key_ of the user I want to update, in this case id: 1 (better known as _Nikola Tesla_).
+2. Next, I set the Profile _association attribute_ to the _primary key_ of Nikola's Profile (id: 1).
 
+So now that I've placed the _primary key_  as the value of the **Profile** _association attribute_ in the Nikola's _Record_, sails can deduce that **the profile** is associated with **Nikola Tesla**.  
 
-As you might expect, the **Profile** _attribute_ in each instance of the **User** _model_ is now capable of referring to a particular instance of the **Profile** _model_.  It's important to point out that the **Profile** _attribute_ doesn't necessarily have to be set-- a user might not have a Profile!  Also important is that at this point an instance of the Profile _model_ can belong to more than one User.
+<img src="http://i.imgur.com/Rm2bI5y.jpg" />
+
+As you might expect, the **Profile** _attribute_ in each user _Record_ is now capable of referring to a particular instance of the **Profile** _model_.  It's important to point out that the **Profile** _attribute_ doesn't necessarily have to be set-- a user might not have a Profile!  Equally important is that at this point a profile _Record_ can belong to more than one User.
 
 So now that I've created the association, what can I do with it?
 
-### Finding instances of a model: using "populate" in a _one-way association_
+### Finding associated _Records_: using "populate" in a _one-way association_
 
-<img src="http://i.imgur.com/VjlXM84.jpg" />
+<img src="http://i.imgur.com/59sfv4c.jpg" />
 
-There are several methods I'll be using to **populate** (i.e. look up), **add**, and **remove** associated instances of the models.  Here is a general description of each method:
+There are several methods I'll be using to **populate** (i.e. look up), **add**, and **remove** associated _Records_. Here is a general description of each method:
 
 
 <table>
@@ -382,7 +383,21 @@ There are several methods I'll be using to **populate** (i.e. look up), **add**,
 
 <!-- I got to about here and had to stop ~mike -->
 
-The first of these methods is `.populate` which I can use to have sails return all instances of an association.  Given this example:
+The first of these methods is `.populate` which I can use to have sails return all _Records_ of an association.  
+
+First I'll open the [Sails console]() by running the follwing command in my terminal:
+
+```sh
+$ sails console
+```
+
+Now, at the `sails> ` prompt, I'll enter:
+
+```javascript
+sails> User.findOne(1).populate('profile').exec(function(err,user){ console.log(user); });
+```
+
+That's hard to read so let's look at the same code formatted in a more readable style:
 
 ```javascript
 User.findOne(1)
@@ -392,7 +407,11 @@ User.findOne(1)
   });
 ```
 
-I first find 'Nikola Tesla' using the `.findOne` method.  I then chain `.populate` to look up the `profile`. Sails returns the following json:
+####How does this work?
+
+1. I first find 'Nikola Tesla' using the `.findOne` method.  
+2. I then chain `.populate` to look up the `profile` _association attribute_. 
+3. Sails returns the following json:
 
 ```javascript
 { 
@@ -410,9 +429,9 @@ I first find 'Nikola Tesla' using the `.findOne` method.  I then chain `.populat
 }
 ```
  
-###Create new instances of a model: a **new** _Profile_ with an existing _User_
+###Creating a **new** _Profile_ and associating it with an existing _User_
 
-<img src=http://i.imgur.com/vEqilgL.jpg />
+<img src=http://i.imgur.com/BDVwKao.jpg?1 />
 
 First I'll open the [Sails console]() by running the follwing command in my terminal:
 
@@ -447,13 +466,13 @@ Profile.create({aboutMe: "I'm an American author and game designer known for my 
 3. Next, I asign the Profile _attribute_ of **Neal Stepheson** with the Profile `id:` returned from step one using `user.profile = profile.id;`
 4. Finally I save the model instance of **Neal Stephenson** by using the `.save` method.
 
-### Create new instances of a model: a **new** _User_ with an existing _Profile_
+### Creating a **new** _User_ and associating it with an existing _Profile_
 
-<img src=http://i.imgur.com/1gDOtgW.jpg />
+<img src=http://i.imgur.com/KWmQ4WM.jpg/>
 
 I could use the same strategy I used in the previous example, however, because the User _model_ is aware of the Profile _model_ through its association, I can also use an additional, less verbose, approach.
 
-For this example, I have a previously created instance of the Profile _model_:
+>**Note:** I previously created the following Profile _Record_ for this example:
 
 ```json
 { 
@@ -493,49 +512,160 @@ User.create({name: 'Aimee Mann', profile: 3})
 1. First I create the **new** _User_ using the `.create` method and pass in the name  along with Profile _attributes_.
 2. Because my User _model_ is already aware of the Profile _association_, I simply had to pass the Profile _attribute_ and value and sails automatically assigns the Profile's primary id to the Profile _attribute_ of the User _model_.
 
-### Removing the association of a model instance: one-way associations
+### Removing the association between a _User_ and a _Profile_: a _one-way associations_
 
-I can remove Nikola Tesla's association with its Profile by assigning `null` to the Profile _attribute_ of Nikola Tesla.
+<img src="http://i.imgur.com/4MqMR3v.jpg?1" />
 
-<img src="http://i.imgur.com/oA9DUmV.jpg" />
+I can remove Neal Stephenson's association with its Profile by assigning `null` to Neal's Profile _attribute_.
 
-###Configuring the Model: a _one-to-one association_ between User and Profile
+First I'll open the [Sails console]() by running the follwing command in my terminal:
 
-So far, I've been using a one-way association. I’m able to find out which Profiles are associated with a User from the User _model's_ Profile _attribute_.  I’m unable to do this from the Profile _model_ because the Profile _model_ doesn’t have an Association _attribute_ to store the primary key of the associated User.  But that’s easy to fix.
+```sh
+$ sails console
+```
 
-<img src="http://i.imgur.com/pjLX2Pk.jpg" />
+Now, at the `sails> ` prompt, I'll enter:
 
-Similar to how I configured the User _model_, I'll configure the Profile _model_ with a new Association attribute called **Owner**.  
+
+```javascript
+sails> User.update(2).set({profile: null}).exec(console.log);
+```
+
+####How does this work?
+
+1. First I pass the _primary key_ of Neal Stephenson.
+2. Next, I'll set the Profile _association attribute_ to null.
+
+##Two-way Associations: Configuring, Finding, Creating, Updating and Removing Associations
+
+So far, I've been using a one-way association between the User and Profile _models_. Nikola Tesla is aware of his Profile, however, his Profile doesn't know anything about Nikola Tesla.  This is easy to fix. I'll configure another one-way association in the opposite direction, this time between the Profile and User _models_.  
+
+**Since I already explained how to use a one-way association, isn't two-way associations the same thing?**  Well, yes and no.  Yes, in that the configuration of the model is very similar, however, the way I use the create, update, and remove methods are different and worthy of some examples.
+
+###Configuring the _Model_: a _two-way association_
 
 <img src="http://i.imgur.com/8VPMYjA.jpg" />
 
-I now have a place in the User _model_ for the primary key of an instance of the Profile _model_.  
+Similar to how I configured the User _model_, I can configure the Profile _model_ with a new _**association** attribute_ called **Owner**.  The User _**association attribute_ represents a one-way relationship between the Profile _model_ and the User _model_.  Nikola Tesla's Profile is now "aware" of Nikola.
 
 <img src ="http://i.imgur.com/AJkVupC.jpg" />
 
 
-**Now that I have a two-way relationship, what can I do with it?**
+### Finding associated _Records_: using "populate" in a _two-way association_
 
-### Finding instances of a model: using "populate" in a _two-way association_
+Not surprisingly finding a User or Profile record is identical to the one-way association.  Where things get interesting is in Creating, Updating, and Deleting Associations.
 
-Not surprisingly finding an instance of the User _model_ and populating its associated instance of the Profile _model_ is identical to the one-way association.  Where things get interesting is in Creating, Updating, and Deleting Associations.
+<img src="http://i.imgur.com/ur9r0XE.jpg?2" />
 
-<img src="http://i.imgur.com/3QHbFXb.jpg" />
+### Create a new _User_ and _Profile_ Record while adding associations at the same time
 
-### Create new instances of a model: add a new _User_ and _Profile_ at one time
+<img src="http://i.imgur.com/VzznCRP.jpg?1" />
 
-<img src="http://i.imgur.com/JNJJn97.jpg" />
+First I'll open the [Sails console]() by running the follwing command in my terminal:
 
-### Updating instances of a model: a _two-way association_
+```sh
+$ sails console
+```
 
-Updating an instance of a the Profile _model_ is identical to a one-way association.
-
-<img src="http://i.imgur.com/DafMu45.jpg" />
-
-### Removing the association of a model instance: _two-way associations_
+Now, at the `sails> ` prompt, I'll enter:
 
 
-<img src="http://i.imgur.com/V9RNJMA.jpg" />
+```javascript
+sails> User.create({name: 'Boris Karloff', profile: {aboutMe: 'I am an actor born in 1887 best known for my portrayal of Frankenstein's monster and the voice of the animated classic 'The Grinch that stole Christimas', gender: 'male'}}).exec(function(err, user) {Profile.update(user.profile).set({owner: user.id}).exec(console.log); });
+```
 
-Here there are two associations to remove -- Nikola Tesla's association with the Profile through the Profile _association attribute_ and the Profile model instance through the Owner _association attribute_.  I can remove...
+Here is the same code but in a more readable format:
 
+```javascript
+User.create({name: 'Boris Karloff', profile: {aboutMe: 'I am an actor born in 1887 best known for my portrayal of Frankenstein's monster and the voice of the animated classic 'The Grinch that stole Christimas." , gender: 'male'}})
+  .exec(function(err, user) {
+    Profile.update(user.profile)
+      .set({owner: user.id})
+        .exec(console.log); 
+  });
+```
+
+####How does this work?
+
+1. First I create the user _Boris Karloff_ by passing the `name` of the new User I'm creating.
+2. I also pass in Boris Karloff's _association attribute_ --**profile** as an object that contains the attributes of the Profile -- `aboutMe` and `gender`. 
+3. Next, I update Boris's Profile in the callback using `user.profile` as the _primary id_ of the Profile I want to update.
+4. Finally, I set the Profile's _association attribute_ -- `owner` and pass in Boris Karloff's _primary key_ using `user.id`.
+
+
+###Updating a Record's association: a two-way association.
+
+<img src="http://i.imgur.com/BjN9M44.jpg" />
+
+First I'll open the [Sails console]() by running the follwing command in my terminal:
+
+```sh
+$ sails console
+```
+
+Now, at the `sails> ` prompt, I'll enter:
+
+
+```javascript
+sails> User.update(5, { profile: { id: 5, owner: 5 } }).exec(console.log)
+```
+
+####How does this work?
+
+1. First I'll pass in Charles Ponzi's _primary key_ (5) as the user I want to update.
+2.  I'll pass in Ponzi's _association attribute_ -- **profile** as an object containing the _primary key_ of Ponzi's Profile (id: 5) as well as the _primary key_ of Ponzi himself (id: 5) as the value of the **owner** _association attribute_.
+
+### Removing the association between a _User_ and a _Profile_: a _two-way association_
+
+<img src="http://i.imgur.com/pLtQHjb.jpg" />
+
+First I'll open the [Sails console]() by running the follwing command in my terminal:
+
+```sh
+$ sails console
+```
+
+Now, at the `sails> ` prompt, I'll enter:
+
+```javascript
+sails> User.update({id: 5}, {profile: {id: 5, owner: null}}).exec(function(err, user) { user[0].profile = null; user[0].save(); });
+```
+
+Here is the same code but in a more readable format:
+
+```javascript
+User.update({id: 5}, {profile: {id: 5, owner: null}})
+  .exec(function(err, user) { 
+    user[0].profile = null; 
+    user[0].save(); 
+  });
+```
+
+####How does this work?
+
+1. First I'll pass in Charles Ponzi's  _primary key_ (5) as the user I want to update.
+2. Next, I'll pass in Ponzi's _association attribute_ --**profile** as an object containing the _primary key_ of Ponzi's Profile (id: 5) as well as assigning the **owner** _association attribute_ to null. 
+
+>**Note:** It is very important that when passing a nested object in the `.update` method that I specify a _primary key_ of what I want to update.  If I don't pass the _primary key_, the `.update` method will create a new object.
+
+###Validating Two-way Associations
+Even though I've set-up a two-way association between the User and Profile as well as the Profile and User, there is nothing that will prevent a Charles Ponzi's Profile _record_ from being associated with both Charles Ponzi and Nikola Tesla.  Given Ponzi's past, I don't think Nikola Tesla would appreciate that.  But as with most things there's a way to prevent that behavior.
+
+Because Associations are _attributes_ waterline validations apply.
+
+###Unqiue Validation: Enforcing a one-to-one association
+
+In order to prevent more than one User being associated with a particular Profile, I'll make a slight configuration change in my User and Profile _models_.
+
+<img src="http://i.imgur.com/GlPyaVf.jpg" />
+
+By adding the **unique** _validation_, only one Profile _record_ may be associated with a particular User _record_.  If I attempt to associate a Profile _record_ to more than one User _record_, I receive the following json:
+
+```javascript
+{
+  error: "E_UNKNOWN",
+  summary: "Encountered an unexpected error",
+  status: 500,
+  raw: "error: duplicate key value violates unique constraint "user_profile_key""
+}
+```
