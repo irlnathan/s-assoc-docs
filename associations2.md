@@ -278,6 +278,10 @@ Accessing stored Profiles from the browser is just as easy via [`http://localhos
 
 With our models defined, attributes configured, and some initial data created, it's time to address associations.
 
+<!--                       -->
+<!-- Start of Associations -->
+<!--                       -->
+
 ##Why do we use _Associations_?
 **Associations** provide a way to relate models so that finding, creating, updating, and destroying _Records_ requires less programming.  _Associations_ require some initial configuration, however, once configured, allow me to find and change records easily.
 
@@ -377,8 +381,6 @@ There are several methods I'll be using to **populate** (i.e. look up), **add**,
   <td align="center">todo</td>
  </tr>
 </table>
-
-
 
 
 <!-- I got to about here and had to stop ~mike -->
@@ -536,7 +538,11 @@ sails> User.update(2).set({profile: null}).exec(console.log);
 1. First I pass the _primary key_ of Neal Stephenson.
 2. Next, I'll set the Profile _association attribute_ to null.
 
-##Two-way Associations: Configuring, Finding, Creating, Updating and Removing Associations
+<!--                       -->
+<!--  Two-way Associations -->
+<!--                       -->
+
+##Two-way Associations: Configuring, Finding, Creating, Updating and Removing 
 
 So far, I've been using a one-way association between the User and Profile _models_. Nikola Tesla is aware of his Profile, however, his Profile doesn't know anything about Nikola Tesla.  This is easy to fix. I'll configure another one-way association in the opposite direction, this time between the Profile and User _models_.  
 
@@ -657,7 +663,7 @@ Because Associations are _attributes_ waterline validations apply.
 
 In order to prevent more than one User being associated with a particular Profile, I'll make a slight configuration change in my User and Profile _models_.
 
-<img src="http://i.imgur.com/GlPyaVf.jpg" />
+<img src="http://i.imgur.com/FyDmr8K.jpg" />
 
 By adding the **unique** _validation_, only one Profile _record_ may be associated with a particular User _record_.  If I attempt to associate a Profile _record_ to more than one User _record_, I receive the following json:
 
@@ -669,3 +675,224 @@ By adding the **unique** _validation_, only one Profile _record_ may be associat
   raw: "error: duplicate key value violates unique constraint "user_profile_key""
 }
 ```
+
+<!--                           -->
+<!--  One to Many Associations -->
+<!--                           -->
+
+##One to Many Associations: Configuring, Finding, Creating, Updating and Removing 
+
+Up to this point, the associations I've used have been limited to single _Records_.  In this section I'm going to explore associating multiple _Records_ together.  The first of these associations is a one-to-many relationship like:
+
+- _a band_ has one to many _members_
+- _a mother_ can have one to many _children_
+- _a person_ can manage one to many _projects_
+
+For my **sailsPeople** _project_ I'm going to add a new _model_ called **Leads**.  Each _User_ can have many _Leads_.  Setting up this association is simple.
+
+###Configuring the Model: a one-to-many association
+
+I'll configure the Lead _model_ with a **new** _association attribute_ called **Leads**-- to represent a particular User's _Leads_.  This time, however, instead of specifying an _association type_ of **model**, I'll use a association type_ of **collection**.
+
+<img src="http://i.imgur.com/sTYSbLf.jpg" />
+
+Once again sails abstracts the complexity away from you, however, I find it helpful to dig a bit deeper to see what's going on behind the scenes.  My sailsPeople project now has four models -- User, Profile and Lead.  But wait, what's the fourth model?  First, since we're not going to be discussing the Profile _model_ in this section let's concentrate on the two _models_ that are going to share the association -- _User_ and _Lead_.  The fourth model is something called a **Join** or **Junction** model.  This _model_ will be the bridge between the _User_ and the _Lead_.
+
+<img src="http://i.imgur.com/fSCIWrJ.jpg?1" />
+
+###Creating a new _Lead_ and adding an association with an existing _User_
+
+<img src="http://i.imgur.com/Yc2scFO.jpg" />
+
+First I'll open the [Sails console]() by running the follwing command in my terminal:
+
+```sh
+$ sails console
+```
+
+Now, at the `sails> ` prompt, I'll enter:
+
+```javascript
+sails> User.findOne(1).exec(function(err,user){ user.leads.add({name: 'George Jetson'}); user.save(); });
+```
+
+Here is the same code but in a more readable format:
+
+```javascript
+User.findOne(1)
+  .exec(function(err,user){ 
+    user.leads.add({name: 'George Jetson'}); 
+    user.save();
+  });
+```
+
+####How does this work?
+
+1. First I find _Nikola Tesla_ by passing in his _primary key_ (1) into the `.findOne()` method.
+2. Next, using dot notation (user.leads) I add the lead _George Jetson_ by passing in an object `{name: 'George Jetson'}`as an argument to the `.add()` method.
+3. Finally, I save _Nikola Tesla_ using the `.save()` method.
+
+> **Note:** Using the method just explained, I've created additional _Leads_ -- Hero Protagonist, Guy Montag, Mustapha Mond, and Winston Smith, now associated with _Nikola Tesla_.
+
+###Finding _associated_ Records: using "populate" in a one-to-many association
+
+<img src="http://i.imgur.com/KdodJm5.jpg" />
+
+First I'll open the [Sails console]() by running the follwing command in my terminal:
+
+```sh
+$ sails console
+```
+
+Now, at the `sails> ` prompt, I'll enter:
+
+```javascript
+sails> User.findOne(1).populate(‘leads’).exec(console.log);
+```
+
+####How does this work?
+
+1. First I pass in _Nikola Tesla's_ _primary key_ (1).
+2. I then use the `.populate()` method passing in the _association attribute_ of *leads*.
+
+Sails returns the following json object:
+
+```javascript
+
+ [ { leads: 
+     [ { name: 'Geore Jetson',
+         id: 1,
+         createdAt: Thu May 01 2014 14:32:23 GMT-0500 (CDT),
+         updatedAt: Thu May 01 2014 14:32:23 GMT-0500 (CDT) } ],
+       { name: 'Hero Protagonist',
+         id: 2,
+         createdAt: Thu May 01 2014 14:23:10 GMT-0500 (CDT),
+         updatedAt: Thu May 01 2014 14:23:10 GMT-0500 (CDT) },
+       { name: 'Guy Montag',
+         id: 3,
+         createdAt: Thu May 01 2014 14:23:21 GMT-0500 (CDT),
+         updatedAt: Thu May 01 2014 14:23:21 GMT-0500 (CDT) },
+       { name: 'Mustapha Mond',
+         id: 4,
+         createdAt: Thu May 01 2014 14:23:32 GMT-0500 (CDT),
+         updatedAt: Thu May 01 2014 14:23:32 GMT-0500 (CDT) },
+       { name: 'Winston Smith',
+         id: 5,
+         createdAt: Thu May 01 2014 14:23:36 GMT-0500 (CDT),
+         updatedAt: Thu May 01 2014 14:23:36 GMT-0500 (CDT) },
+           profile: null,
+    name: 'Nikola Tesla',
+    createdAt: Thu May 01 2014 13:48:02 GMT-0500 (CDT),
+    updatedAt: Thu May 01 2014 14:32:23 GMT-0500 (CDT),
+    id: 1 } ]
+
+```
+
+###Removing the association between a User and a Lead: one-to-many associations
+
+<img src="http://i.imgur.com/BziXZ4j.jpg" />
+
+First I'll open the [Sails console]() by running the follwing command in my terminal:
+
+```sh
+$ sails console
+```
+
+Now, at the `sails> ` prompt, I'll enter:
+
+```javascript
+sails> User.findOne(1).exec(function(err, user) { user.leads.remove(3); user.save(); });
+```
+
+Here is the same code but in a more readable format:
+
+```javascript
+User.findOne(1)
+  .exec(function(err, user) { 
+    user.leads.remove(3); 
+    user.save(); 
+  });
+```
+
+####How does this work?
+
+1. First I find _Nikola Tesla_ by passing in his _primary key_ (1) into the `.findOne()` method.
+2. Next, using dot notation (user.leads) I'll remove the _Guy Montag_ Lead by passing in that Lead's  _primary key_ (3) as an argument to the `.remove()` method.
+3. Finally, I'll save the User -- _Nikola Tesla_ using the `.save()` method.
+
+##<TODO: Add a restriction on a lead only belonging to one user>
+
+
+<!--                            -->
+<!--  Many to Many Associations -->
+<!--                            -->
+
+##Many to Many Associations: Configuring, Finding, Creating, Updating and Removing 
+
+In addition to associating one _Record_ to many other _Records_, sails also provides for many-to-many relationships like:
+
+- One student takes many classes; one class has many students.
+- an order can have many items -- an item can be in many orders
+- One doctor, sees many patients; one patient sees many doctors.
+
+For my **sailsPeople** _project_ I'm going to add a new _model_ called **sailsTeam**.  Each _User_ can have many _sailTeams_ and each _sailsTeam_ can have many _Users_. 
+
+###Configuring the Model: a many-to-many association
+
+I'll configure the _User_ model with a new _association attribute_ called-- **sailsTeams** to represent which (if any) _sailsTeam_ the _User_ is a member.  I'll also create another _model_ called -- **SailsTeam** to track the teams.  Within this _model_ I'll create a new _association attribute_ called-- **members** to represent the _Users_ that are members of the team.
+
+<img src="http://i.imgur.com/wpBg8Dv.jpg" />
+
+Although sails abstracts the complexity away from you, I find it helpful to dig deeper in order to make a more informed decision of how you configure your associations.  The number of models comprising this many-to-many relationship might be surprising.  In this configuration we have two join or junctions models -- one for the relationship betwen _Users_ to _SailsTeam_ and between _SailsTeam_ to _Users_.  In a bit, I'll show how I can make one slight change to the configuration so that only one join/junction model is necessary, however, could there ever be a situation where I want a many-to-many association where my _Models_ don't know about each other?
+
+Turns out, the answer is yes.  Suppose I have an application where a _user_ can "friend" another _user_ and/or designate that _user as an "enemy".  In this application I don't want one _user_ to know that another _user_ has made them an enemy.  Therefore, I'll maintain the associations for each _model_.
+
+> **Note:** Creating and Removing associations are identical to one-to-many associations.
+
+<img src="http://i.imgur.com/PYhNdrm.jpg?1" />
+
+###Configuring the Model: a many-to-many association with _via_
+
+Now suppose I want to make each _model_ aware of the other?  To accomplish this I'll use a new attribute called **_via_**.  Using _via_ informs sails that I 
+
+<img src="http://i.imgur.com/Y6hBzEW.jpg" />
+
+Once again, my sailsProject has three models -- the User _model_, the sailsTeam _model_, and the join/junction model that bridges the other two models together.  Now both the User and sailsTeam _models_ are aware of each other.  Therefore, associations that are added or removed occur on both models simultaneously.
+
+<img src="http://i.imgur.com/QSt7Bve.jpg?1" />
+
+###Creating a new sailsTeam and adding an association with an existing User
+
+> **Note:** I created two sailsTeams prior to this example.
+
+<img src="http://i.imgur.com/4tQL6jH.jpg" />
+
+First I'll open the [Sails console]() by running the follwing command in my terminal:
+
+```sh
+$ sails console
+```
+
+Now, at the `sails> ` prompt, I'll enter:
+
+```javascript
+sails> User.findOne(1).exec(function(err, user) { user.sailsteams.add({name: 'West Coast'}); user.save() });
+```
+
+Here is the same code but in a more readable format:
+
+```javascript
+User.findOne(1)
+  .exec(function(err, user) { 
+    user.sailsteams.add({name: 'West Coast'}); 
+    user.save() 
+  });
+```
+
+####How does this work?
+
+**TODOS**
+FIND
+REMOVE
+- remove camel-case from sailsTeam
+- add validation to one-to-many case
