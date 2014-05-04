@@ -291,7 +291,7 @@ With our _models_ defined, _attributes_ configured, and some _records_ created, 
 <!-- Start of Associations -->
 <!--                       -->
 
-##Why do we use _Associations_?
+##Why do I use _Associations_?
 **Associations** provide a way to relate models so that finding, creating, updating, and destroying _Records_ requires less programming.  _Associations_ require some initial configuration, however, once configured, allow me to find and change records easily.
 
 ##One-Way Associations: _Configuring_, _Finding_, _Creating_, _Updating_ and _Removing_ Associations
