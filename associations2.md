@@ -1026,9 +1026,7 @@ So what will happen if I associate the user _Neal Stephenson_ with the lead _Geo
 
 <img src="http://i.imgur.com/LgF0rUK.jpg" />
 
-Because I've sync'd these two models using the **via** attribute, Sails knows to update 
+Because I've sync'd these two models using the **via** attribute, Sails has added the appropriate back-end configuration so that whether I add an association from the User _model_ or the _Lead_ model only one user will be associated with a particular lead.  
 
 >**Note:** To prevent a user other than _Nikola Tesla_ from changing a lead association, I could create a policy where only _users_ that have an association with a lead, have the ablity to change the association. See the [**policies**]() reference guide for information on how to configure policies.
 
-**TODOS**
-- add validation to one-to-many case
