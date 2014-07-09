@@ -1,5 +1,4 @@
 # Introduction to Model Associations
-> ~/Development/balderdash/screencasts/associations/assoc-githu
 
 ##Overview of the project
 

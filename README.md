@@ -1,0 +1,1 @@
+This repo has been depreciated.  Please find the latest [here](https://github.com/irlnathan/sails101-Associations-Overview).
