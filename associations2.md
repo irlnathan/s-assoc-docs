@@ -1,4 +1,5 @@
 # Introduction to Model Associations
+> ~/Development/balderdash/screencasts/associations/assoc-githu
 
 ##Overview of the project
 
@@ -326,7 +327,7 @@ Before I make the association, _Nikola Tesla_ and his _Profile_ exist independen
 
 >**Task:** Create an association between _Nikola Tesla_ and his _Profile_.  
 
-First I'll open the [Sails console]() by running the follwing command in my terminal:
+First I'll open the [Sails console]() by running the following command in my terminal:
 
 ```sh
 $ sails console
@@ -446,7 +447,7 @@ User.findOne(1)
 
 <img src=http://i.imgur.com/BDVwKao.jpg?1 />
 
-First I'll open the [Sails console]() by running the follwing command in my terminal:
+First I'll open the [Sails console]() by running the following command in my terminal:
 
 ```sh
 $ sails console
@@ -499,7 +500,7 @@ I could use the same strategy I used in the previous example, however, because t
 ```
 
 
-First I'll open the [Sails console]() by running the follwing command in my terminal:
+First I'll open the [Sails console]() by running the following command in my terminal:
 
 ```sh
 $ sails console
@@ -533,7 +534,7 @@ I create the **new** _User_ using the `.create` method and pass in Aimee Mann's 
 
 I can remove Neal Stephenson's association with its Profile by assigning `null` to Neal's Profile _attribute_.
 
-First I'll open the [Sails console]() by running the follwing command in my terminal:
+First I'll open the [Sails console]() by running the following command in my terminal:
 
 ```sh
 $ sails console
@@ -583,7 +584,7 @@ Not surprisingly finding a User or Profile record is identical to the one-way as
 
 <img src="http://i.imgur.com/VzznCRP.jpg?1" />
 
-First I'll open the [Sails console]() by running the follwing command in my terminal:
+First I'll open the [Sails console]() by running the following command in my terminal:
 
 ```sh
 $ sails console
@@ -620,7 +621,7 @@ User.create({name: 'Boris Karloff', profile: {aboutMe: 'I am an actor born in 18
 
 <img src="http://i.imgur.com/BjN9M44.jpg" />
 
-First I'll open the [Sails console]() by running the follwing command in my terminal:
+First I'll open the [Sails console]() by running the following command in my terminal:
 
 ```sh
 $ sails console
@@ -643,7 +644,7 @@ sails> User.update(5, { profile: { id: 5, owner: 5 } }).exec(console.log)
 
 <img src="http://i.imgur.com/pLtQHjb.jpg" />
 
-First I'll open the [Sails console]() by running the follwing command in my terminal:
+First I'll open the [Sails console]() by running the following command in my terminal:
 
 ```sh
 $ sails console
@@ -761,7 +762,7 @@ Once again sails abstracts the complexity away from me, however, I find it helpf
 
 <img src="http://i.imgur.com/Yc2scFO.jpg" />
 
-First I'll open the [Sails console]() by running the follwing command in my terminal:
+First I'll open the [Sails console]() by running the following command in my terminal:
 
 ```sh
 $ sails console
@@ -796,7 +797,7 @@ User.findOne(1)
 
 <img src="http://i.imgur.com/KdodJm5.jpg" />
 
-First I'll open the [Sails console]() by running the follwing command in my terminal:
+First I'll open the [Sails console]() by running the following command in my terminal:
 
 ```sh
 $ sails console
@@ -852,7 +853,7 @@ Sails returns the following json object:
 
 <img src="http://i.imgur.com/BziXZ4j.jpg" />
 
-First I'll open the [Sails console]() by running the follwing command in my terminal:
+First I'll open the [Sails console]() by running the following command in my terminal:
 
 ```sh
 $ sails console
@@ -929,7 +930,7 @@ Once again, my sailsProject has three models -- the User _model_, the sailsTeam 
 
 <img src="http://i.imgur.com/oDtwB95.jpg" />
 
-First I'll open the [Sails console]() by running the follwing command in my terminal:
+First I'll open the [Sails console]() by running the following command in my terminal:
 
 ```sh
 $ sails console
@@ -962,7 +963,7 @@ User.findOne(1)
 
 <img src="http://i.imgur.com/lk2E6Kp.jpg" />
 
-First I'll open the [Sails console]() by running the follwing command in my terminal:
+First I'll open the [Sails console]() by running the following command in my terminal:
 
 ```sh
 $ sails console
